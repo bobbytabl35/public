@@ -123,6 +123,8 @@
 
           Android.postMessage(JSON.stringify({ action: 'toast', data: { text: 'Hello from the web!' } }));
           Android.postMessage(JSON.stringify({ action: 'refresh_jwt', data: { old_jwt: null } }));
+          Android.postMessage(JSON.stringify({ action: 'open_browser_tab', data: { open_browser_tab: "https://example.com" } }));
+          Android.postMessage(JSON.stringify({ action: 'open_browser_tab', data: { open_browser_tab: "indriver://web?url=https://example.com" } }));
 
           log("Probed and sent log.");
         }, 400);

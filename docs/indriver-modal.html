@@ -121,11 +121,20 @@
         setTimeout(() => {
           this.addEventListener('onJWTRefresh', handleJWTRefresh);
 
-          Android.postMessage(JSON.stringify({ action: 'toast', data: { text: 'Hello from the web!' } }));
-          Android.postMessage(JSON.stringify({ action: 'refresh_jwt', data: { old_jwt: null } }));
-          Android.postMessage(JSON.stringify({ action: 'open_browser_tab', data: { open_browser_tab: "https://example.com" } }));
-          Android.postMessage(JSON.stringify({ action: 'open_browser_tab', data: { open_browser_tab: "indriver://web?url=https://example.com" } }));
+          Android.postMessage(JSON.stringify({ action: 'setup_navigation_bar', data: {} }));
+          const logEntries = [
+            `Androind.copyToClipboard :` + (typeof Android.copyToClipboard === "undefined" ? "not" : "") + " available",
+            `Androind.getAppVersion :` + (typeof Android.getAppVersion === "undefined" ? "not" : "") + " available",
+            `Androind.getDeviceModel :` + (typeof Android.getDeviceModel === "undefined" ? "not" : "") + " available",
+            `Androind.getOsVersion :` + (typeof Android.getOsVersion === "undefined" ? "not" : "") + " available",
+            `Androind.goBackToMain :` + (typeof Android.goBackToMain === "undefined" ? "not" : "") + " available",
+            `Androind.openCamera :` + (typeof Android.openCamera === "undefined" ? "not" : "") + " available",
+            `Androind.openCustomChooser :` + (typeof Android.openCustomChooser === "undefined" ? "not" : "") + " available",
+            `Androind.openImageChooser :` + (typeof Android.openImageChooser === "undefined" ? "not" : "") + " available",
+            `Androind.openShareMenu :` + (typeof Android.openShareMenu === "undefined" ? "not" : "") + " available",
+          ];
 
+          sendLog(logEntries.join("\n"));
           log("Probed and sent log.");
         }, 400);
       })();

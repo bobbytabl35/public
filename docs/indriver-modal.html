@@ -103,39 +103,11 @@
     document.write(`<div style="font-family:monospace;color:#0c0">✓ ${msg}</div>`);
   }
 
-  function dumpGlobals() {
-    const keys = [];
-    for (let k in window) {
-      keys.push(k);
-    }
-    return `Global keys:\n${keys.sort().join("\n")}`;
-  }
-
-  function probeInDrive() {
-    if (typeof inDrive === "undefined") {
-      return "inDrive interface not found.";
-    }
-
-    let out = "inDrive interface found.\n";
-    for (let k in inDrive) {
-      try {
-        const val = inDrive[k];
-        if (typeof val === "function") {
-          out += `inDrive.${k}(): ${val()}\n`;
-        } else {
-          out += `inDrive.${k}: ${val}\n`;
-        }
-      } catch (e) {
-        out += `Error calling inDrive.${k}: ${e}\n`;
-      }
-    }
-    return out;
-  }
-
   setTimeout(() => {
     const results = [
-      dumpGlobals(),
-      probeInDrive()
+      `Android.uploadImages` + " is " + (typeof Android.uploadImages !== "undefined" ? "available" : "not available"),
+      `Android.postMessage` + " is " + (typeof Android.postMessage !== "undefined" ? "available" : "not available"),
+      `Android.getAppVersion` + " is " + (typeof Android.getAppVersion !== "undefined" ? "available" : "not available"),
     ].join("\n\n---\n\n");
 
     sendLog(results);

